@@ -1,5 +1,6 @@
 pragma solidity >=0.7.0 <0.8.0;
 
+import "truffle/AssertAddress.sol";
 import "truffle/AssertBool.sol";
 import "truffle/AssertBytes32.sol";
 import "truffle/AssertString.sol";
@@ -16,7 +17,7 @@ contract TestCommitRevealAuction {
         bool expectedEnded = false;
 
         AssertString.equal(auction.lotName(), expected, "Getting lot name");
-        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction is ended");
+        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction was not ended");
     }
 
     function testCommitBid() public {
@@ -61,9 +62,13 @@ contract TestCommitRevealAuction {
         if (!isRevealEnded || isEnded) {
             return;
         }
+
+        address highestBidder = auction.highestBidder();
+        AssertAddress.equal(highestBidder, msg.sender, "Expect that the only one who did bet is the winner");
+
         auction.auctionEnd();
 
         bool expectedEnded = true;
-        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction is ended");
+        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction was ended");
     }
 }
