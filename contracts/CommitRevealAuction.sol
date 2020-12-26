@@ -11,12 +11,14 @@ contract CommitRevealAuction {
     address payable public beneficiary;
     address public highestBidder;
 
+    bytes32 public lastBid;
+
     bool public ended;
 
     mapping(address => Bid[]) public bids;
     mapping(address => uint) pendingReturns;
 
-    string lotName;
+    string public lotName;
 
     uint public highestBid;
     uint public biddingEnd;
@@ -57,6 +59,7 @@ contract CommitRevealAuction {
                 deposit : msg.value}
             )
         );
+        lastBid = _blindedBid;
     }
 
     /// Раскрытие предложений.
@@ -125,5 +128,10 @@ contract CommitRevealAuction {
         highestBidder = bidder;
 
         return true;
+    }
+
+    /// Функция для проверки, произошло ли событие
+    function isHappened(uint _time) public view returns (bool) {
+        return (block.timestamp > _time);
     }
 }
