@@ -2,9 +2,9 @@
 
 Написание контракта Solidity, реализующего паттерн commit-reveal, и тестов в testnet Ethereum.
 
-Контракт реализует логику аукциона.
+Контракт реализует логику аукциона "вслепую".
 Инициируется аукцион, у которого задается biddingTime, revealTime, beneficiary и lotName.
-Во время biddingTime участники делают ставки "вслепую". 
+Во время biddingTime участники делают заявки. 
 Во время revealTime идет процесс раскрытия. 
 По итогу выявляется победитель и происходит трансфер по адресу beneficiary.
 
@@ -13,7 +13,6 @@
 `npm install -g ganache-cli`
 
 `npm install -g truffle`
-
 
 # **Build**
 
@@ -30,6 +29,9 @@
 `truffle deploy`
 
 # **Test**
+Для запуска тестов на JavaScript необходимо сделать
+
+`npm install`
 
 Запуск тестов на Javascript и Solidity
 
