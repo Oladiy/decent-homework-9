@@ -1,6 +1,4 @@
-const abi = require("ethereumjs-abi");
 const ETHUtil = require("ethereumjs-util");
-const ethers = require("ethers");
 const Web3 = require("web3");
 
 const CommitRevealAuction = artifacts.require("CommitRevealAuction");
