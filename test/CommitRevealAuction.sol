@@ -39,7 +39,7 @@ contract TestCommitRevealAuction {
         AssertBytes32.equal(auction.lastBid(), expectedBid, "Expect that bid was written");
     }
 
-    function testRevealAndEndAuction() public {
+    function testReveal() public {
         bool isRevealEnded = auction.isHappened(auction.revealEnd());
         bool isEnded = auction.ended();
 
@@ -56,9 +56,11 @@ contract TestCommitRevealAuction {
         secrets[0] = "1337";
 
         auction.reveal(values, fakes, secrets);
+    }
 
-        isRevealEnded = auction.isHappened(auction.revealEnd());
-        isEnded = auction.ended();
+    function testEndAuction() public {
+        bool isRevealEnded = auction.isHappened(auction.revealEnd());
+        bool isEnded = auction.ended();
         if (!isRevealEnded || isEnded) {
             return;
         }
