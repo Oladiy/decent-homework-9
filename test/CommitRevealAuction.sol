@@ -1,5 +1,6 @@
 pragma solidity >=0.7.0 <0.8.0;
 
+import "truffle/AssertAddress.sol";
 import "truffle/AssertBool.sol";
 import "truffle/AssertBytes32.sol";
 import "truffle/AssertString.sol";
@@ -16,7 +17,7 @@ contract TestCommitRevealAuction {
         bool expectedEnded = false;
 
         AssertString.equal(auction.lotName(), expected, "Getting lot name");
-        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction is ended");
+        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction was not ended");
     }
 
     function testCommitBid() public {
@@ -38,7 +39,7 @@ contract TestCommitRevealAuction {
         AssertBytes32.equal(auction.lastBid(), expectedBid, "Expect that bid was written");
     }
 
-    function testRevealAndEndAuction() public {
+    function testReveal() public {
         bool isRevealEnded = auction.isHappened(auction.revealEnd());
         bool isEnded = auction.ended();
 
@@ -55,15 +56,21 @@ contract TestCommitRevealAuction {
         secrets[0] = "1337";
 
         auction.reveal(values, fakes, secrets);
+    }
 
-        isRevealEnded = auction.isHappened(auction.revealEnd());
-        isEnded = auction.ended();
+    function testEndAuction() public {
+        bool isRevealEnded = auction.isHappened(auction.revealEnd());
+        bool isEnded = auction.ended();
         if (!isRevealEnded || isEnded) {
             return;
         }
+
+        address highestBidder = auction.highestBidder();
+        AssertAddress.equal(highestBidder, msg.sender, "Expect that the only one who did bet is the winner");
+
         auction.auctionEnd();
 
         bool expectedEnded = true;
-        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction is ended");
+        AssertBool.equal(auction.ended(), expectedEnded, "Expect that auction was ended");
     }
 }

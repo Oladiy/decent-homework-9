@@ -132,6 +132,6 @@ contract CommitRevealAuction {
 
     /// Функция для проверки, произошло ли событие
     function isHappened(uint _time) public view returns (bool) {
-        return (block.timestamp > _time);
+        return (block.timestamp >= _time);
     }
 }
